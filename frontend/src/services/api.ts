@@ -10,6 +10,11 @@ const axiosInstance = axios.create({
   },
 });
 
+interface ApiErrorResponse {
+  message: string;
+  // You can add other properties if needed
+}
+
 class ApiError extends Error {
   constructor(message: string, public statusCode?: number) {
     super(message);
@@ -19,10 +24,8 @@ class ApiError extends Error {
 
 const handleApiError = (error: AxiosError): never => {
   if (axios.isAxiosError(error)) {
-    throw new ApiError(
-      error.response?.data?.message || 'An error occurred',
-      error.response?.status
-    );
+    const errorMessage = (error.response?.data as ApiErrorResponse)?.message || 'An error occurred';
+    throw new ApiError(errorMessage, error.response?.status);
   }
   throw new ApiError('An unexpected error occurred');
 };
