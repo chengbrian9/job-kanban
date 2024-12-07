@@ -26,9 +26,22 @@ A modern, interactive Kanban board to track your job application pipeline. Built
 - DND Kit (for drag and drop)
 - Vite (build tool)
 
+## Prerequisites
+
+- Python 3.8 or higher
+- Node.js 16 or higher
+- npm 8 or higher
+- Git
+
 ## Setup
 
-1. Set up environment variables:
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/job-kanban.git
+cd job-kanban
+```
+
+2. Set up environment variables:
 ```bash
 # Copy the example environment file
 cp .env.example .env
@@ -37,7 +50,7 @@ cp .env.example .env
 nano .env
 ```
 
-2. Set up the backend:
+3. Set up the backend:
 ```bash
 # Create and activate virtual environment
 python -m venv venv
@@ -46,11 +59,14 @@ source venv/bin/activate  # On Windows, use: venv\Scripts\activate
 # Install dependencies
 pip install -r requirements.txt
 
+# Initialize the database (first time only)
+python app.py init-db
+
 # Run the Flask server
 python app.py
 ```
 
-3. Set up the frontend:
+4. Set up the frontend:
 ```bash
 cd frontend
 
@@ -61,7 +77,7 @@ npm install
 npm run dev
 ```
 
-4. Open your browser:
+5. Open your browser:
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:5001
 
@@ -83,7 +99,7 @@ PORT=5001
 HOST=0.0.0.0
 
 # Frontend URL (for CORS)
-FRONTEND_URL=http://localhost:3000
+FRONTEND_URL=http://localhost:5173
 ```
 
 ## Usage
@@ -101,6 +117,31 @@ FRONTEND_URL=http://localhost:3000
 3. Interview - Interview process ongoing
 4. Offer - Received job offer
 5. Rejected - Application rejected or withdrawn
+
+## Troubleshooting
+
+1. **Database Issues**:
+   - If you get database errors, try removing the `instance` folder and reinitializing:
+     ```bash
+     rm -rf instance/
+     python app.py init-db
+     ```
+
+2. **Port Conflicts**:
+   - If port 5001 is in use, modify the `PORT` in `.env`
+   - If port 5173 is in use, use `npm run dev -- --port 3000` to run on a different port
+
+3. **CORS Issues**:
+   - Ensure the `FRONTEND_URL` in `.env` matches your frontend's actual URL
+   - Check that both backend and frontend servers are running
+
+4. **Node Modules Issues**:
+   - If you get dependency errors, try:
+     ```bash
+     rm -rf frontend/node_modules
+     rm frontend/package-lock.json
+     cd frontend && npm install
+     ```
 
 ## Deployment
 
